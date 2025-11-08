@@ -17,23 +17,76 @@ const Team = () => {
   const [error, setError] = useState("");
   const [teamMembers, setTeamMembers] = useState(0);
 
-  // Generate ID Card PDF
-  const generatePDF = async () => {
-    const element = componentRef.current;
-    try {
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: [canvas.width, canvas.height],
-      });
-      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-      pdf.save(`${user.name}_team_id.pdf`);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
+const generatePDF = async () => {
+  const element = componentRef.current;
+  if (!element) return alert("Team section not found!");
+
+  try {
+    // Clone element into a full-screen portal
+    const portal = document.createElement("div");
+    portal.style.position = "fixed";
+    portal.style.top = "0";
+    portal.style.left = "0";
+    portal.style.width = "100vw";
+    portal.style.height = "100vh";
+    portal.style.background = "#08123B";
+    portal.style.zIndex = "9999";
+    portal.style.overflow = "auto";
+    portal.style.padding = "40px";
+    portal.style.display = "flex";
+    portal.style.justifyContent = "center";
+    portal.style.alignItems = "flex-start";
+
+    const cloned = element.cloneNode(true);
+    cloned.style.width = "100%";
+    cloned.style.maxWidth = "800px";
+    cloned.style.background = "#08123B";
+    cloned.style.color = "white";
+    portal.appendChild(cloned);
+    document.body.appendChild(portal);
+
+    // Wait for render to finish
+    await new Promise((r) => setTimeout(r, 1200));
+
+    // Scroll to top to ensure full capture
+    portal.scrollTo(0, 0);
+
+    // Use html2canvas
+    const canvas = await html2canvas(cloned, {
+      scale: 2,
+      backgroundColor: "#08123B",
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: cloned.scrollWidth,
+      windowHeight: cloned.scrollHeight,
+    });
+
+    // Check for valid output
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+      throw new Error("Canvas rendering failed. Section may be hidden.");
     }
-  };
+
+    const imgData = canvas.toDataURL("image/png", 1.0);
+
+    const pdf = new jsPDF({
+      orientation: "p",
+      unit: "px",
+      format: [canvas.width, canvas.height],
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save(`${user.name}_team_id.pdf`);
+
+    // Clean up
+    document.body.removeChild(portal);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    alert("PDF creation failed again. Try keeping the page visible and scroll the section fully into view before retrying.");
+  }
+};
 
   // Fetch team data
   const fetchdata = async () => {
