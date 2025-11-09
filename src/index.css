@@ -14,6 +14,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (max-width: 768px) {
+  .id-card-item {
+    transform: scale(1.1);
+    transform-origin: center;
+    padding: 18px 22px !important;
+  }
+
+  .id-card-item p,
+  .id-card-item span {
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+  }
+
+  .id-card-item .text-[10px],
+  .id-card-item .text-xs {
+    font-size: 12px !important;
+  }
+
+  .id-card-item .text-lg {
+    font-size: 18px !important;
+  }
+
+  .id-card-item .text-sm {
+    font-size: 13px !important;
+  }
+}
 
 
 html {
