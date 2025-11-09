@@ -48,7 +48,7 @@ const About = () => {
                 Department of Commerce Computer Applications, St. Joseph’s
                 College (Autonomous), Tiruchirappalli
               </span>
-              . This 3-hour coding challenge provides an exceptional platform
+              . This 6-hour coding challenge provides an exceptional platform
               for students to showcase their creativity, technical brilliance,
               and innovative thinking. Participants will collaborate to develop
               real-world solutions that combine logic, innovation, and

@@ -22,7 +22,7 @@ const Contact = () => {
         <div className="w-24 h-[3px] bg-[#FFD400] mx-auto mb-16 rounded-full"></div>
 
         {/* Contact Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
           {/* Organizing Secretaries */}
           <div className="bg-[#0B1741]/80 backdrop-blur-md border border-[#1E3A8A]/40 hover:border-[#FFD400]/60 transition-all duration-300 rounded-2xl p-6 text-center shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_-5px_rgba(255,212,0,0.3)]">
             <h3 className="text-[#FFD400] text-xl md:text-2xl font-semibold font-[Fredoka] mb-4">
@@ -64,29 +64,6 @@ const Contact = () => {
                 >
                   Ms. Lakshmi C - +91 82701 70975
                 </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Registration Queries */}
-          <div className="bg-[#0B1741]/80 backdrop-blur-md border border-[#1E3A8A]/40 hover:border-[#FFD400]/60 transition-all duration-300 rounded-2xl p-6 text-center shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_-5px_rgba(255,212,0,0.3)]">
-            <h3 className="text-[#FFD400] text-xl md:text-2xl font-semibold font-[Fredoka] mb-4">
-              Registration Queries
-            </h3>
-            <ul className="space-y-3 text-gray-200 font-[Poppins] text-[15px] md:text-[16px]">
-              <li>
-              </li>
-              <li>
-                <a
-                  href="tel:+916382503265"
-                  className="flex items-center justify-center gap-2 hover:text-[#FFD400] transition"
-                >
-                  <Phone size={18} /> Mr. Honey Joe - 6382503265
-                </a>
-              </li>
-              <li>
-              </li>
-              <li>
               </li>
             </ul>
           </div>
