@@ -51,11 +51,6 @@ const Header = () => {
             </p>
           </div>
 
-          {/* Countdown Timer */}
-          <div className="mt-5">
-            <CountdownTimer />
-          </div>
-
           {/* Register Button */}
           <div className="mt-8">
             <Link to="/register">

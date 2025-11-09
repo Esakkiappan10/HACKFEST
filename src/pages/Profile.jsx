@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Layout from "../layouts/Layout";
 import ScrollToTopButton from "../components/ScrollToTopButton";
 import Team from "./Team";
-import { Dialog, Pane } from "evergreen-ui";
+import  DarkModal  from "../pages/darkmodel";
 import WhatsAppJoinButton from "../components/WhatsAppJoin";
 
 const Profile = () => {
@@ -76,125 +76,102 @@ const Profile = () => {
               <p className="text-[16px] md:text-lg leading-relaxed text-gray-200">
                 Register your teammates to receive your{" "}
                 <span className="text-[#FFD400]">Event ID Cards</span>. Please
-                bring both soft and printed copies on the event day.
+                bring both soft and printed copies on the event day You Must Add Yourself too for ID card generation.
               </p>
             </div>
 
-            <Pane>
-              <button
-                onClick={() => setIsShown(true)}
-                className="px-5 py-2.5 text-white font-medium border-2 border-[#FFD400]/50 rounded-lg bg-[#0E1C4F]/50 hover:bg-[#FFD400]/20 transition-all duration-300 shadow-[0_0_10px_rgba(255,212,0,0.25)]"
-              >
-                + Add Participant
-              </button>
+           <div className="relative flex flex-col items-center">
+  <button
+    onClick={() => setIsShown(true)}
+    className="px-5 py-2.5 text-white font-medium border-2 border-[#FFD400]/50 rounded-lg bg-[#0E1C4F]/50 hover:bg-[#FFD400]/20 transition-all duration-300 shadow-[0_0_10px_rgba(255,212,0,0.25)]"
+  >
+    + Add Participant
+  </button>
 
               {/* --- Participant Dialog --- */}
-              <Dialog
-                isShown={isShown}
-                title="Add Your Teammate"
-                onCloseComplete={() => setIsShown(false)}
-                hasFooter={false}
-                containerProps={{
-                  className: "backdrop-blur-md bg-black/50",
-                }}
-              >
-                <form
-                  onSubmit={handleSubmit(onsubmit)}
-                  className="flex flex-col gap-5 font-[Poppins]"
-                >
-                  <div className="flex flex-col gap-4 p-6 bg-[#0B1741]/90 border border-[#FFD400]/20 rounded-xl shadow-[0_0_25px_-5px_rgba(255,212,0,0.25)]">
-                    {/* Name */}
-                    <div className="flex flex-col">
-                      <label className="text-sm text-[#FFD400] mb-1 font-medium">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        {...register("name")}
-                        className="input-field"
-                        placeholder="Enter teammate name"
-                      />
-                      <p className="text-red-400 text-xs mt-1">
-                        {errors.name?.message}
-                      </p>
-                    </div>
+<DarkModal
+  isOpen={isShown}
+  onClose={() => setIsShown(false)}
+  onSubmit={handleSubmit(onsubmit)}
+>
+  {/* Form Fields */}
+  <div className="flex flex-col gap-4 p-4 bg-[#0B1741] border border-[#FFD400]/30 rounded-xl shadow-[0_0_25px_-5px_rgba(255,212,0,0.3)]">
 
-                    {/* Email */}
-                    <div className="flex flex-col">
-                      <label className="text-sm text-[#FFD400] mb-1 font-medium">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        {...register("email")}
-                        className="input-field"
-                        placeholder="example@mail.com"
-                      />
-                      <p className="text-red-400 text-xs mt-1">
-                        {errors.email?.message}
-                      </p>
-                    </div>
+    {/* Name */}
+    <div className="flex flex-col">
+      <label className="text-sm text-[#FFD400] mb-1.5 font-medium">Name</label>
+      <input
+        type="text"
+        {...register("name")}
+        className="bg-[#08123B] border border-[#FFD400]/20 rounded-lg px-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FFD400] focus:ring-2 focus:ring-[#FFD400]/30 transition-all"
+        placeholder="Enter teammate name"
+      />
+      <p className="text-red-400 text-xs mt-1.5">{errors.name?.message}</p>
+    </div>
 
-                    {/* Department */}
-                    <div className="flex flex-col">
-                      <label className="text-sm text-[#FFD400] mb-1 font-medium">
-                        Department No.
-                      </label>
-                      <input
-                        type="text"
-                        {...register("degree")}
-                        className="input-field"
-                        placeholder="Enter department number"
-                      />
-                      <p className="text-red-400 text-xs mt-1">
-                        {errors.degree?.message}
-                      </p>
-                    </div>
+    {/* Email */}
+    <div className="flex flex-col">
+      <label className="text-sm text-[#FFD400] mb-1.5 font-medium">Email</label>
+      <input
+        type="email"
+        {...register("email")}
+        className="bg-[#08123B] border border-[#FFD400]/20 rounded-lg px-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#00A2FF] focus:ring-2 focus:ring-[#00A2FF]/30 transition-all"
+        placeholder="example@mail.com"
+      />
+      <p className="text-red-400 text-xs mt-1.5">{errors.email?.message}</p>
+    </div>
 
-                    {/* Contact */}
-                    <div className="flex flex-col">
-                      <label className="text-sm text-[#FFD400] mb-1 font-medium">
-                        Contact
-                      </label>
-                      <input
-                        type="text"
-                        {...register("contact")}
-                        className="input-field"
-                        placeholder="Enter contact number"
-                      />
-                      <p className="text-red-400 text-xs mt-1">
-                        {errors.contact?.message}
-                      </p>
-                    </div>
+    {/* Department */}
+    <div className="flex flex-col">
+      <label className="text-sm text-[#FFD400] mb-1.5 font-medium">Department No.</label>
+      <input
+        type="text"
+        {...register("degree")}
+        className="bg-[#08123B] border border-[#FFD400]/20 rounded-lg px-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/30 transition-all"
+        placeholder="Enter department number"
+      />
+      <p className="text-red-400 text-xs mt-1.5">{errors.degree?.message}</p>
+    </div>
 
-                    {/* Error & Success */}
-                    {error && (
-                      <p className="text-red-500 text-sm text-center">
-                        {error}
-                      </p>
-                    )}
-                    {data && (
-                      <p className="text-green-400 text-sm text-center">
-                        {data}
-                      </p>
-                    )}
+    {/* Contact */}
+    <div className="flex flex-col">
+      <label className="text-sm text-[#FFD400] mb-1.5 font-medium">Contact</label>
+      <input
+        type="text"
+        {...register("contact")}
+        className="bg-[#08123B] border border-[#FFD400]/20 rounded-lg px-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FFD400] focus:ring-2 focus:ring-[#FFD400]/30 transition-all"
+        placeholder="Enter contact number"
+      />
+      <p className="text-red-400 text-xs mt-1.5">{errors.contact?.message}</p>
+    </div>
 
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className={`mt-2 w-full py-2.5 rounded-md font-[Fredoka] text-white transition-all duration-500 ${
-                        isLoading
-                          ? "bg-gradient-to-r from-gray-600 to-gray-700 cursor-not-allowed"
-                          : "bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] hover:opacity-90"
-                      }`}
-                    >
-                      {isLoading ? "Registering..." : "Register"}
-                    </button>
-                  </div>
-                </form>
-              </Dialog>
-            </Pane>
+    {/* Error & Success */}
+    {error && (
+      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-center text-red-400 text-sm font-medium">
+        {error}
+      </div>
+    )}
+    {data && (
+      <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-center text-green-400 text-sm font-medium">
+        {data}
+      </div>
+    )}
+
+    {/* Submit Button */}
+    <button
+      type="submit"
+      disabled={isLoading}
+      className={`mt-2 w-full py-3 rounded-lg font-[Fredoka] font-semibold text-white transition-all duration-300 shadow-lg ${
+        isLoading
+          ? "bg-gray-700 cursor-not-allowed opacity-60"
+          : "bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] hover:opacity-90 hover:shadow-[0_0_20px_rgba(255,212,0,0.5)] hover:scale-[1.02]"
+      }`}
+    >
+      {isLoading ? "Registering..." : "Register Teammate"}
+    </button>
+  </div>
+</DarkModal>
+          </div>
           </div>
 
           {/* --- Team Section --- */}

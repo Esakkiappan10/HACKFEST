@@ -70,8 +70,8 @@ const Rules = () => {
         {/* Download Button */}
         <div className="flex justify-center mt-16">
           <a
-            href="HackFest25-Rules.pdf"
-            download="HackFest25-Rules.pdf"
+            href="Rules_for_hackfest25.pdf"
+            download="Rules_for_hackfest25.pdf"
             className="group relative inline-flex items-center justify-center px-8 py-3 font-[Fredoka] text-lg text-white rounded-full transition-transform transform hover:scale-105 overflow-hidden"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] opacity-90 group-hover:opacity-100 transition-all duration-300"></span>

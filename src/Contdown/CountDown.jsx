@@ -1,86 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import Countdown from 'react-countdown';
+import React, { useEffect, useState } from "react";
+import Countdown from "react-countdown";
 
-// Helper function to get remaining time
-const getRemainingTime = (endTime) => {
-  const currentTime = 1739761834653;
-  console.log(Date.now());
-  return endTime - currentTime;
-};
+const EVENT_DATE = new Date("2025-11-28T09:00:00+05:30").getTime(); // 28 Nov 2025, 9 AM IST
 
 const CountdownTimer = () => {
-  const [endTime, setEndTime] = useState(null);
+  const [endTime, setEndTime] = useState(EVENT_DATE);
 
-  // Check for stored endTime in localStorage on mount
   useEffect(() => {
-    const storedEndTime = localStorage.getItem('countdownEndTime');
-    if (storedEndTime) {
-      const remainingTime = getRemainingTime(new Date(storedEndTime).getTime());
-      if (remainingTime > 0) {
-        setEndTime(new Date(storedEndTime).getTime());
-      } else {
-        localStorage.removeItem('countdownEndTime'); // Clean up if the time has passed
-      }
+    // Save once in localStorage (optional persistence)
+    const storedEndTime = localStorage.getItem("countdownEndTime");
+    if (!storedEndTime) {
+      localStorage.setItem("countdownEndTime", EVENT_DATE.toString());
     }
   }, []);
 
-  // Function to start a new countdown
-  const startCountdown = (durationInSeconds) => {
-    const newEndTime = 1739761834653    + durationInSeconds * 1000;
-    setEndTime(newEndTime);
-    localStorage.setItem('countdownEndTime', new Date(newEndTime).toISOString());
-  };
-
-  // Reset countdown
-  const resetCountdown = () => {
-    setEndTime(null);
-    localStorage.removeItem('countdownEndTime');
-  };
-
-  // Renderer for the Countdown component
-  const countdownRenderer = ({days, hours, minutes, seconds, completed }) => {
+  const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
-      return <span>Event Started</span>;
-    } else {
       return (
-        <div className="grid grid-cols-4 gap-2">
-        <div className="flex items-center justify-center flex-col text-white border-2 rounded-lg py-2 px-3 shadow-[0px_0px_10px_3px_#000]">
-          <p>{days}</p>
-          <p>Days</p>
+        <div className="text-center text-[#00FF9C] text-3xl font-[Fredoka] mt-8">
+          🎉 Event Has Started!
         </div>
-        <div className="flex items-center justify-center flex-col text-white border-2 rounded-lg py-2 px-3 shadow-[0px_0px_10px_3px_#000]">
-          <p>{hours}</p>
-          <p>Hours</p>
-        </div>
-        <div className="flex items-center justify-center flex-col text-white border-2 rounded-lg py-2 px-3 shadow-[0px_0px_10px_3px_#000]">
-          <p>{minutes}</p>
-          <p>Minutes</p>
-        </div>
-        <div className="flex items-center justify-center flex-col text-white border-2 rounded-lg py-2 px-3 shadow-[0px_0px_10px_3px_#000]">
-          <p>{seconds}</p>
-          <p>Seconds</p>
-        </div>
-      </div>
       );
     }
+
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 justify-center items-center mt-6">
+        {[
+          { label: "Days", value: days },
+          { label: "Hours", value: hours },
+          { label: "Minutes", value: minutes },
+          { label: "Seconds", value: seconds },
+        ].map((unit, i) => (
+          <div
+            key={i}
+            className="flex flex-col items-center justify-center text-white border border-[#FFD400]/40 rounded-lg py-3 px-6 bg-[#0B1741]/70 shadow-[0_0_20px_rgba(255,212,0,0.3)] backdrop-blur-sm"
+          >
+            <p className="text-3xl font-bold text-[#FFD400]">{unit.value}</p>
+            <p className="text-sm uppercase tracking-wider text-gray-300">
+              {unit.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
-    <div className='text-white'>
-      {/* <h1>Countdown Timer</h1> */}
-
-      {/* If endTime is set, start countdown */}
-      {endTime ? (
-        <Countdown
-          date={endTime}
-          renderer={countdownRenderer}
-          onComplete={resetCountdown} // Reset when countdown finishes
-        />
-      ) : (
-        startCountdown(1064000)
-      )}
-
-      {endTime && <button className='hidden' onClick={resetCountdown}>Reset</button>}
+    <div className="flex flex-col items-center justify-center py-12 bg-[#08123B] text-white">
+      <h2 className="text-[#FFD400] text-3xl md:text-4xl font-[Fredoka] mb-4 text-center">
+        Countdown to Event Day
+      </h2>
+      <Countdown date={endTime} renderer={countdownRenderer} />
+      <p className="text-gray-400 text-sm mt-3">📅 28 November 2025, 9:00 AM</p>
     </div>
   );
 };

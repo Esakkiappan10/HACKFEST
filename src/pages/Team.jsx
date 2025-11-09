@@ -18,73 +18,71 @@ const Team = () => {
   const [teamMembers, setTeamMembers] = useState(0);
 
 const generatePDF = async () => {
-  const element = componentRef.current;
-  if (!element) return alert("Team section not found!");
+  const container = componentRef.current;
+  if (!container) {
+    alert("Preview not found!");
+    return;
+  }
 
   try {
-    // Clone element into a full-screen portal
-    const portal = document.createElement("div");
-    portal.style.position = "fixed";
-    portal.style.top = "0";
-    portal.style.left = "0";
-    portal.style.width = "100vw";
-    portal.style.height = "100vh";
-    portal.style.background = "#08123B";
-    portal.style.zIndex = "9999";
-    portal.style.overflow = "auto";
-    portal.style.padding = "40px";
-    portal.style.display = "flex";
-    portal.style.justifyContent = "center";
-    portal.style.alignItems = "flex-start";
-
-    const cloned = element.cloneNode(true);
-    cloned.style.width = "100%";
-    cloned.style.maxWidth = "800px";
-    cloned.style.background = "#08123B";
-    cloned.style.color = "white";
-    portal.appendChild(cloned);
-    document.body.appendChild(portal);
-
-    // Wait for render to finish
-    await new Promise((r) => setTimeout(r, 1200));
-
-    // Scroll to top to ensure full capture
-    portal.scrollTo(0, 0);
-
-    // Use html2canvas
-    const canvas = await html2canvas(cloned, {
-      scale: 2,
-      backgroundColor: "#08123B",
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: cloned.scrollWidth,
-      windowHeight: cloned.scrollHeight,
-    });
-
-    // Check for valid output
-    if (!canvas || canvas.width === 0 || canvas.height === 0) {
-      throw new Error("Canvas rendering failed. Section may be hidden.");
+    const idCards = container.querySelectorAll(".id-card-item");
+    if (idCards.length === 0) {
+      alert("No ID cards found.");
+      return;
     }
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    // Card dimensions (in pixels) – must exactly match preview design
+    const CARD_WIDTH_PX = 340;
+    const CARD_HEIGHT_PX = 214;
 
-    const pdf = new jsPDF({
-      orientation: "p",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
+    // PDF credit-card size in mm
+    const CARD_WIDTH_MM = 85.6;
+    const CARD_HEIGHT_MM = 53.98;
 
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save(`${user.name}_team_id.pdf`);
+    for (let i = 0; i < idCards.length; i++) {
+      const card = idCards[i];
+      const memberName = data.teamMember[i]?.name || `Member${i + 1}`;
 
-    // Clean up
-    document.body.removeChild(portal);
-  } catch (error) {
-    console.error("Error generating PDF:", error);
-    alert("PDF creation failed again. Try keeping the page visible and scroll the section fully into view before retrying.");
+      // Capture the element exactly as displayed
+      const canvas = await html2canvas(card, {
+        scale: 4, // high DPI for sharpness
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#0C1A4B", // solid background
+        width: CARD_WIDTH_PX,
+        height: CARD_HEIGHT_PX,
+        logging: false,
+      });
+
+      const imgData = canvas.toDataURL("image/png", 1.0);
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: [CARD_HEIGHT_MM, CARD_WIDTH_MM],
+        compress: true,
+      });
+
+      // Convert px → mm for accurate scaling
+      const pxToMm = (px) => (px * CARD_WIDTH_MM) / CARD_WIDTH_PX;
+
+      const imgWidth = pxToMm(CARD_WIDTH_PX);
+      const imgHeight = pxToMm(CARD_HEIGHT_PX);
+
+      // Fill the full card area perfectly
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "FAST");
+
+      const sanitizedName = memberName.replace(/[^a-z0-9\s]/gi, "_").trim();
+      pdf.save(`${sanitizedName}_HACKFEST25_ID.pdf`);
+
+      if (i < idCards.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+      }
+    }
+
+    console.log("✅ All ID cards generated successfully!");
+  } catch (err) {
+    console.error("❌ Error generating PDF:", err);
+    alert("Failed to generate PDF. Please try again.");
   }
 };
 
@@ -162,56 +160,75 @@ const generatePDF = async () => {
               </div>
             ))}
           </div>
+          
+{/* ID Card Preview Section - Credit Card Size */}
+<div className="mb-8 px-4">
+  <h3 className="text-xl font-semibold text-[#FFD400] mb-4 text-center">
+    Preview ID Cards
+  </h3>
+  <div className="flex flex-wrap justify-center gap-6" ref={componentRef}>
+    {data.teamMember?.map((member, idx) => (
+      <div
+        key={idx}
+        className="id-card-item bg-[#0C1A4B] border-2 border-[#FFD400] rounded-lg overflow-hidden"
+        style={{
+          width: '340px',
+          height: '214px',
+          padding: '16px 20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        {/* Header */}
+        <div className="text-center">
+          <p className="text-[#FFD400] text-xs font-semibold">
+            St. Joseph's College (Autonomous)
+          </p>
+          <p className="text-white text-lg font-bold mt-1">HACKFEST'25</p>
+          <p className="text-gray-400 text-[10px]">28 November 2025</p>
+        </div>
 
-          {/* ID Card Preview Section */}
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 px-4"
-            ref={componentRef}
-          >
-            {data.teamMember?.map((member, idx) => (
-              <div
-                key={idx}
-                className="bg-[#0C1A4B]/80 border border-[#FFD400]/30 rounded-2xl shadow-[0_0_25px_-5px_rgba(255,212,0,0.25)] p-6 flex flex-col items-center text-white relative"
-              >
-                <div className="text-center mb-4">
-                  <p className="text-[#FFD400] text-sm md:text-base font-semibold tracking-wide">
-                    DEPARTMENT OF COMMERCE COMPUTER APPLICATIONS
-                  </p>
-                  <p className="text-base md:text-lg">St. Joseph's College (Autonomous)</p>
-                  <p className="text-2xl md:text-3xl font-[Stylish] mt-2 text-[#FFD400]">
-                    HACKFEST’25
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">28 November 2025</p>
-                </div>
-
-                {/* Details */}
-                <div className="w-full grid grid-cols-2 gap-y-2 text-sm md:text-base border-t border-[#FFD400]/30 pt-3">
-                  <p>Team ID:</p>
-                  <p>{user.teamId}</p>
-                  <p>Name:</p>
-                  <p>{member.name}</p>
-                  <p>College:</p>
-                  <p>{user.college}</p>
-                  <p>Contact:</p>
-                  <p>{member.contact}</p>
-                </div>
-
-                <p className="text-[#FFD400] text-center mt-3 text-xs md:text-sm">
-                  Valid till 28 November 2025
-                </p>
-              </div>
-            ))}
+        {/* Details */}
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-300">Team ID:</span>
+            <span className="text-white font-medium">{user.teamId}</span>
           </div>
-
-          {/* Download Button */}
-          <div className="flex justify-center mb-8">
-            <button
-              onClick={generatePDF}
-              className="bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] px-6 py-2.5 rounded-md text-white font-medium hover:opacity-90 transition-all duration-300 shadow-[0_0_15px_-3px_rgba(255,212,0,0.4)]"
-            >
-              Download Team ID Card (PDF)
-            </button>
+          <div className="flex justify-between">
+            <span className="text-gray-300">Name:</span>
+            <span className="text-white font-medium">{member.name}</span>
           </div>
+          <div className="flex justify-between">
+            <span className="text-gray-300">College:</span>
+            <span className="text-white font-medium text-right ml-2">{user.college}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-300">Contact:</span>
+            <span className="text-white font-medium">{member.contact}</span>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center border-t border-[#FFD400]/30 pt-2">
+          <p className="text-[#FFD400] text-[10px] font-medium">
+            Valid till 28 November 2025
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Download Button */}
+<div className="flex justify-center mb-8">
+  <button
+    onClick={generatePDF}
+    className="bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] px-6 py-2.5 rounded-lg text-white font-semibold hover:opacity-90 transition-all duration-300 shadow-[0_0_15px_-3px_rgba(255,212,0,0.4)]"
+  >
+    📥 Download ID Cards (PDF)
+  </button>
+</div>
 
           {/* Payment Info */}
           <div className="flex flex-col md:flex-row justify-between items-center text-gray-200 text-sm md:text-base gap-3 mb-12 px-4">

@@ -9,7 +9,7 @@ const Faq = () => {
   const accordionData = [
     {
       title: "How many participants can join?",
-      desc: "Maximum 2 participants per team.",
+      desc: "Minimum and Maximum 2 participants per team.",
       desc1: "Any number of teams from the same institution can participate.",
     },
     {
@@ -22,7 +22,7 @@ const Faq = () => {
     },
     {
       title: "What documents must participants bring on the event day?",
-      desc: "Participants must bring their college ID card and a bonafide certificate from their respective college.",
+      desc: "Participants must bring their college ID card and generated Team Event - ID .",
     },
     {
       title:

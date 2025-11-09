@@ -9,6 +9,7 @@ import Schedule from '../components/Schedule'
 import Rules from '../components/RulesGuidelines/Rules'
 import Contact from '../components/Contact'
 import Footer from '../layouts/Footer'
+import CountdownTimer from '../Contdown/CountDown'
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       <Layout>
         <ScrollToTopButton></ScrollToTopButton>
         <Header></Header>
+        <CountdownTimer></CountdownTimer>
         <About></About>
         <Schedule/>
         <Faq/>
