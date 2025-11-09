@@ -31,20 +31,26 @@ const Schedule = () => {
         {/* Clock Container */}
         <div className="relative flex justify-center items-center w-full">
           {/* Outer glowing ring */}
-          <div className="absolute w-[480px] h-[480px] md:w-[580px] md:h-[580px] rounded-full border-[2.5px] border-[#FFD400]/40 animate-[spin_50s_linear_infinite]"></div>
+          <div className="absolute w-[480px] h-[480px] md:w-[580px] md:h-[580px] rounded-full border-[2.5px] border-[#FFD400]/40 animate-[spin_50s_linear_infinite] max-sm:w-[280px] max-sm:h-[280px]"></div>
 
           {/* Inner glowing ring */}
-          <div className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full border-[2px] border-[#00A2FF]/40 animate-[spin_70s_linear_infinite_reverse]"></div>
+          <div className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full border-[2px] border-[#00A2FF]/40 animate-[spin_70s_linear_infinite_reverse] max-sm:w-[190px] max-sm:h-[190px]"></div>
 
           {/* Soft center glow */}
-          <div className="absolute w-[130px] h-[130px] rounded-full bg-gradient-to-tr from-[#FFD400] to-[#FF6B00] blur-xl opacity-60 animate-pulse"></div>
+          <div className="absolute w-[130px] h-[130px] rounded-full bg-gradient-to-tr from-[#FFD400] to-[#FF6B00] blur-xl opacity-60 animate-pulse max-sm:w-[80px] max-sm:h-[80px]"></div>
 
           {/* Points perfectly between the rings */}
-          <div className="relative w-[480px] h-[480px] md:w-[580px] md:h-[580px] translate-x-[-5px] translate-y-[-10px]">
+          <div className="relative w-[480px] h-[480px] md:w-[580px] md:h-[580px] translate-x-[-5px] translate-y-[-10px] max-sm:w-[280px] max-sm:h-[280px]">
             {scheduleData.map((item, index) => {
               const total = scheduleData.length;
-              const angle = (index * (360 / total)) - 90; // start from top
-              const radius = 200; // halfway between inner (200) and outer (290)
+              const angle = (index * (360 / total)) - 90;
+
+              // Dynamic radius: smaller on mobile, unchanged on desktop
+              const radius =
+                window.innerWidth < 640
+                  ? 110 // mobile
+                  : 200; // desktop as before
+
               const x = radius * Math.cos((angle * Math.PI) / 180);
               const y = radius * Math.sin((angle * Math.PI) / 180);
 
@@ -53,8 +59,8 @@ const Schedule = () => {
                   key={index}
                   className="absolute flex flex-col items-center justify-center text-center text-white"
                   style={{
-                    top: `calc(50% + ${y - 40}px)`,
-                    left: `calc(50% + ${x - 60}px)`,
+                    top: `calc(50% + ${y}px)`,
+                    left: `calc(50% + ${x}px)`,
                     transform: "translate(-50%, -50%)",
                   }}
                   initial={{ opacity: 0, scale: 0.5 }}
@@ -67,13 +73,13 @@ const Schedule = () => {
                 >
                   {/* Time bubble */}
                   <motion.div
-                    className="relative w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full border-2 border-[#FFD400]/70 flex flex-col justify-center items-center bg-[#0B1741]/80 shadow-[0_0_25px_-5px_rgba(255,212,0,0.4)] hover:shadow-[0_0_35px_-5px_rgba(255,212,0,0.6)] transition-all duration-500 cursor-pointer"
+                    className="relative w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full border-2 border-[#FFD400]/70 flex flex-col justify-center items-center bg-[#0B1741]/80 shadow-[0_0_25px_-5px_rgba(255,212,0,0.4)] hover:shadow-[0_0_35px_-5px_rgba(255,212,0,0.6)] transition-all duration-500 cursor-pointer max-sm:w-[60px] max-sm:h-[60px]"
                     whileHover={{ scale: 1.1, rotate: 6 }}
                   >
-                    <p className="text-[18px] md:text-[26px] font-[Fredoka] font-bold">
+                    <p className="text-[18px] md:text-[26px] font-[Fredoka] font-bold max-sm:text-[14px]">
                       {item.time}
                     </p>
-                    <p className="text-[#FFD400] font-[Fredoka] text-sm md:text-base">
+                    <p className="text-[#FFD400] font-[Fredoka] text-sm md:text-base max-sm:text-xs">
                       {item.meridian}
                     </p>
                   </motion.div>
@@ -85,11 +91,11 @@ const Schedule = () => {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.3 + index * 0.15 }}
                   >
-                    <p className="text-sm md:text-base font-[Fredoka] font-medium max-w-[150px] leading-snug">
+                    <p className="text-sm md:text-base font-[Fredoka] font-medium max-w-[150px] leading-snug max-sm:text-xs max-sm:max-w-[90px]">
                       {item.title}
                     </p>
                     {item.duration && (
-                      <p className="text-xs text-gray-300 font-[Poppins]">
+                      <p className="text-xs text-gray-300 font-[Poppins] max-sm:text-[10px]">
                         {item.duration}
                       </p>
                     )}
@@ -105,7 +111,7 @@ const Schedule = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="mt-16 text-gray-300 text-sm md:text-base font-[Poppins] italic"
+          className="mt-16 text-gray-300 text-sm md:text-base font-[Poppins] italic max-sm:text-xs"
         >
           “Each tick brings a new innovation closer.”
         </motion.p>
