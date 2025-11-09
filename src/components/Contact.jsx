@@ -39,7 +39,7 @@ const Contact = () => {
                   href="tel:+917598001419"
                   className="hover:text-[#FFD400] transition"
                 >
-                Ms. P.Lekha</a></li>
+                Ms. P. Lekha</a></li>
             </ul>
           </div>
 

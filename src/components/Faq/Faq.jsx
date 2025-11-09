@@ -33,6 +33,10 @@ const Faq = () => {
       title: "Will food and refreshments be provided to participants?",
       desc: "Yes, food and refreshments will be provided to all registered participants.",
     },
+    {
+      title: "Should we bring copy of event card id to venue?",
+      desc: "Yes, A card like size(with Color) is recommended but A4 size print is also acceptable(Color is Not Mandetory).",
+    },
   ];
 
   return (
