@@ -31,16 +31,17 @@ const Schedule = () => {
         {/* Clock Container */}
         <div className="relative flex justify-center items-center w-full">
           {/* Outer glowing ring */}
-          <div className="absolute w-[320px] h-[320px] md:w-[580px] md:h-[580px] rounded-full border-[2.5px] border-[#FFD400]/40 animate-[spin_50s_linear_infinite] max-md:w-[280px] max-md:h-[280px]"></div>
+          <div className="absolute w-[320px] h-[320px] md:w-[580px] md:h-[580px] rounded-full border-[2.5px] border-[#FFD400]/40 animate-[spin_50s_linear_infinite] max-md:w-[320px] max-md:h-[320px]"></div>
 
           {/* Inner glowing ring */}
-          <div className="absolute w-[220px] h-[220px] md:w-[400px] md:h-[400px] rounded-full border-[2px] border-[#00A2FF]/40 animate-[spin_70s_linear_infinite_reverse] max-md:w-[190px] max-md:h-[190px]"></div>
+          <div className="absolute w-[220px] h-[220px] md:w-[400px] md:h-[400px] rounded-full border-[2px] border-[#00A2FF]/40 animate-[spin_70s_linear_infinite_reverse] max-md:w-[240px] max-md:h-[240px]"></div>
 
           {/* Soft center glow */}
           <div className="absolute w-[90px] h-[90px] md:w-[130px] md:h-[130px] rounded-full bg-gradient-to-tr from-[#FFD400] to-[#FF6B00] blur-xl opacity-60 animate-pulse max-md:w-[75px] max-md:h-[75px]"></div>
 
           {/* Points positioned dynamically */}
-          <div className="relative w-[320px] h-[320px] md:w-[580px] md:h-[580px] max-md:w-[280px] max-md:h-[280px] translate-x-[-5px] translate-y-[-10px]">
+          <div className="relative w-[320px] h-[320px] md:w-[580px] md:h-[580px] max-md:w-[300px] max-md:h-[350px] max-md:translate-x-[+15px] max-md:translate-y-[+15px]">
+
             {scheduleData.map((item, index) => {
               const total = scheduleData.length;
               const angle = index * (360 / total) - 90; // start from top
