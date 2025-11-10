@@ -40,21 +40,20 @@ function UpdatePayment({ userId }) {
         Scan & Upload Your Payment Screenshot
       </h2>
       <p className="text-gray-300 text-sm md:text-base max-w-2xl">
-        Please scan the QR code below to complete your registration fee payment.
-        Once paid, upload your payment screenshot for admin verification.
+        Paymeny Gateway Will be opened on 15th November 2025 All are asked to do the payment before 27 November 2025
       </p>
 
       {/* QR Code Image */}
-      <div className="relative flex justify-center items-center">
+      {/*<div className="relative flex justify-center items-center">
         <div className="absolute w-56 h-56 bg-[#FFD400]/10 blur-3xl rounded-full animate-pulse"></div>
         <img
           src={scanner}
           alt="QR Code Scanner"
           className="relative w-60 h-60 sm:w-72 sm:h-72 object-contain rounded-2xl border-2 border-[#FFD400]/30 shadow-[0_0_30px_-5px_rgba(255,212,0,0.4)]"
         />
-      </div>
+      </div>*/}
 
-      {/* Upload Form */}
+      {/* Upload Form 
       <form
         onSubmit={handleSubmit}
         className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6"
@@ -85,7 +84,7 @@ function UpdatePayment({ userId }) {
         >
           {isLoading ? "Uploading..." : "Upload Screenshot"}
         </button>
-      </form>
+      </form>*/}
 
       {/* Response Message */}
       {message && (
