@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../BASE_URL";
-import { scanner } from "../assets/asset";
 
 function UpdatePayment({ userId }) {
   const [file, setFile] = useState(null);
@@ -35,25 +34,35 @@ function UpdatePayment({ userId }) {
 
   return (
     <div className="w-[90%] lg:w-[75%] mx-auto py-10 flex flex-col gap-6 items-center text-center font-[Fredoka] text-white">
+
       {/* Header */}
       <h2 className="text-2xl md:text-3xl font-bold text-[#FFD400] drop-shadow-[0_0_10px_rgba(255,212,0,0.3)]">
-        Scan & Upload Your Payment Screenshot
+        Complete Your Payment
       </h2>
       <p className="text-gray-300 text-sm md:text-base max-w-2xl">
-        Paymeny Gateway Will be opened on 15th November 2025 All are asked to do the payment before 27 November 2025
+        Payment Gateway Opened.  
+        Please complete the payment before 27 November 2025.
       </p>
 
-      {/* QR Code Image */}
-      {/*<div className="relative flex justify-center items-center">
-        <div className="absolute w-56 h-56 bg-[#FFD400]/10 blur-3xl rounded-full animate-pulse"></div>
-        <img
-          src={scanner}
-          alt="QR Code Scanner"
-          className="relative w-60 h-60 sm:w-72 sm:h-72 object-contain rounded-2xl border-2 border-[#FFD400]/30 shadow-[0_0_30px_-5px_rgba(255,212,0,0.4)]"
-        />
-      </div>*/}
+      {/* Payment Page Button */}
+<a
+  href="https://service.sjctni.edu/Seminar/CommerceCA/HF25/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-4 px-8 py-3 rounded-xl bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] 
+             text-white font-semibold shadow-[0_0_20px_-5px_rgba(255,212,0,0.4)]
+             transition-all duration-300 hover:opacity-90"
+>
+  Go to Payment Portal
+</a>
 
-      {/* Upload Form 
+{/* Upload Instructions */}
+<p className="text-[#FFD400] text-base md:text-lg font-medium mt-6">
+  Please upload a screenshot of your successful payment after completing the payment process.
+</p>
+
+
+      {/* Upload Form */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6"
@@ -76,15 +85,15 @@ function UpdatePayment({ userId }) {
           type="submit"
           disabled={isLoading}
           className={`px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300
-          ${
-            isLoading
-              ? "bg-[#FFD400]/50 cursor-wait"
-              : "bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] hover:opacity-90 shadow-[0_0_20px_-5px_rgba(255,212,0,0.4)]"
-          }`}
+            ${
+              isLoading
+                ? "bg-[#FFD400]/50 cursor-wait"
+                : "bg-gradient-to-r from-[#FFD400] via-[#FF6B00] to-[#00A2FF] hover:opacity-90 shadow-[0_0_20px_-5px_rgba(255,212,0,0.4)]"
+            }`}
         >
           {isLoading ? "Uploading..." : "Upload Screenshot"}
         </button>
-      </form>*/}
+      </form>
 
       {/* Response Message */}
       {message && (
